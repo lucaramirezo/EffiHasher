@@ -137,21 +137,39 @@ public class ListaDinamica implements Serializable {
 	/**
 	 * Reemplaza el objeto en la lista que es igual al objeto proporcionado.
 	 *
-	 * @param o El objeto con el que reemplazar el objeto en la lista.
+	 * @param oldObj El objeto con el que reemplazar el objeto en la lista.
 	 * @return true si se encontró y reemplazó el objeto, false en caso contrario.
 	 */
-	public boolean set(Object o) {
+	public boolean set(Object oldObj, Object newObj) {
 		Node aux = begin;
 		int i = 0;
-		while (i < size - 1) {
-			if (o.equals(aux.getData())) {
-				aux.setData(o);
+		while (i < size) {
+			if (oldObj.equals(aux.getData())) {
+				aux.setData(newObj);
 				return true;
 			}
 			aux = aux.getNext();
 			i++;
 		}
-
+		return false;
+	}
+	/**
+	 * Método específico para trabajar con hash table
+	 *
+	 * @param kv El objeto con el que reemplazar el objeto en la lista.
+	 * @return true si se encontró y reemplazó el objeto, false en caso contrario.
+	 */
+	public boolean set(KeyValue kv) {
+		Node aux = begin;
+		int i = 0;
+		while (i < size) {
+			if (kv.getKey().equals(((KeyValue)aux.getData()).getKey())) {
+				aux.setData(kv);
+				return true;
+			}
+			aux = aux.getNext();
+			i++;
+		}
 		return false;
 	}
 

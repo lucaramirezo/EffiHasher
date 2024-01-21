@@ -109,7 +109,7 @@ public class HashTable {
      * @return verdadero si la inserción fue exitosa, falso si la clave ya existe en la tabla.
      */
     public boolean put(KeyValue kv) {
-        if (get(kv.getKey()) == null) {
+        if (get(kv.getKey()) != null) {
             int pos = hash(kv.getKey());
             table[pos].addUltimo(kv);
             population += 1;
@@ -160,7 +160,6 @@ public class HashTable {
         ListaDinamica lista = table[pos];
         Object res = lista.indexOf(new KeyValue(k, null));
         return res;
-
     }
 
     /**
