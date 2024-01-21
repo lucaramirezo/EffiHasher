@@ -225,5 +225,17 @@ public class HashTable {
 
         }
     }
+    /**
+     * Imprime todos los valores almacenados en la tabla hash.
+     */
+    public void printAll() {
+        for (int i = 0; i < capacity; i++) {
+            ListaDinamica lista = table[i];
+            for (int j = 0; j < lista.getSize(); j++) {
+                KeyValue kv = (KeyValue) lista.get(j);
+                System.out.println("Clave: " + kv.getKey() + ", Valor: " + kv.getValue());
+            }
+        }
+    }
 
 }
