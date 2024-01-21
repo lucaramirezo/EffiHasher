@@ -3,8 +3,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class HashTable {
-    private final static String RUTA_TXT = "data\\txt\\";
-    private final static String RUTA_BINARY = "data\\txt\\";
+    private final static String RUTA_TXT = "/java";
+    private final static String RUTA_BINARY = "/java";
     private final double loadFactor;
     private ListaDinamica[] table;
     private int capacity;
@@ -74,7 +74,7 @@ public class HashTable {
      * @return verdadero si el factor de carga actual es mayor o igual al máximo permitido, falso en caso contrario.
      */
     private boolean checkLoad() {
-        return calculateLoadFactor() >= loadFactor;
+        return calculateLoadFactor() > loadFactor;
     }
 
     /**
@@ -171,7 +171,8 @@ public class HashTable {
         HashTable hsTemp = new HashTable(newCapacity, loadFactor);
         for (int i = 0; i < capacity; i++) {
             ListaDinamica lista = table[i];
-            for (int j = 0; j < lista.getSize(); j++) {
+            int size = lista.getSize();
+            for (int j = 0; j < size; j++) {
                 hsTemp.put((KeyValue) lista.removeFirst());
             }
         }
