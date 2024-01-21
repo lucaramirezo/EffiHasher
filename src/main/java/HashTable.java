@@ -1,10 +1,11 @@
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class HashTable {
-    private final static String RUTA_TXT = "/java";
-    private final static String RUTA_BINARY = "/java";
+public class HashTable implements Serializable {
+    private final static String RUTA_TXT = "/home/duo/Desktop/data";
+    private final static String RUTA_BINARY = "/home/duo/Desktop/data";
     private final double loadFactor;
     private ListaDinamica[] table;
     private int capacity;

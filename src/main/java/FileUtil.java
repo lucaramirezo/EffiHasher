@@ -84,7 +84,7 @@ public class FileUtil {
         }catch(IOException e){
         	bRet=false;
             System.out.println("Problema de IO al serializar");
-            System.out.println(e.toString());
+            System.out.println(e);
         }
         return bRet;
     }

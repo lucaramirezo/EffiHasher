@@ -1,7 +1,9 @@
+import java.io.Serializable;
+
 /**
  * Esta clase representa una tabla hash estática que almacena pares clave-valor.
  */
-public class StaticHashTable {
+public class StaticHashTable implements Serializable {
     private final int TABLE_SIZE; // Definir un tamaño fijo para la tabla hash
     private KeyValue[] table; // Array para almacenar los pares clave-valor
 
