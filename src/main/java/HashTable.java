@@ -14,12 +14,12 @@ public class HashTable implements Serializable {
     /**
      * Constructor para HashTable.
      *
-     * @param c   capacidad inicial de la tabla hash.
-     * @param max factor de carga máximo para la tabla hash.
+     * @param capacity   capacidad inicial de la tabla hash.
+     * @param loadFactor factor de carga máximo para la tabla hash.
      */
-    public HashTable(int c, double max) {
-        this.capacity = c;
-        this.loadFactor = max;
+    public HashTable(int capacity, double loadFactor) {
+        this.capacity = capacity;
+        this.loadFactor = loadFactor;
         this.table = new ListaDinamica[capacity];
         for (int i = 0; i < capacity; i++) {
             table[i] = new ListaDinamica();
