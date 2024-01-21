@@ -4,8 +4,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class HashTable implements Serializable {
-    private final static String RUTA_TXT = "/home/duo/Desktop/data";
-    private final static String RUTA_BINARY = "/home/duo/Desktop/data";
+    private final static String RUTA_TXT = "src/main/java/data/";
+    private final static String RUTA_BINARY = "src/main/java/data/";
     private final double loadFactor;
     private ListaDinamica[] table;
     private int capacity;
