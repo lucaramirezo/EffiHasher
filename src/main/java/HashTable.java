@@ -10,6 +10,9 @@ public class HashTable implements Serializable {
     private ListaDinamica[] table;
     private int capacity;
     private int population;
+    // Contadores
+    private int time; // Para contar los pasos (como una medida de tiempo)
+    private int memory; // Para contar las operaciones de memoria
 
     /**
      * Constructor para HashTable.
@@ -104,18 +107,41 @@ public class HashTable implements Serializable {
     }
 
     /**
+     * Incrementa el contador de pasos (time).
+     * Cada llamada a este método representa una operación realizada,
+     * ayudando a medir la complejidad en términos de pasos de ejecución.
+     */
+    private void incrementTime() {
+        this.time++;
+    }
+
+    /**
+     * Incrementa el contador de memoria (memory).
+     * Cada llamada a este método representa una operación de acceso a memoria,
+     * ayudando a estimar el uso de memoria de la tabla hash.
+     */
+    private void incrementMemory() {
+        this.memory++;
+    }
+
+    /**
      * Inserta un objeto KeyValue en la tabla hash.
+     * Incrementa los contadores de tiempo y memoria para medir el rendimiento.
      *
      * @param kv objeto KeyValue a insertar.
      * @return verdadero si la inserción fue exitosa, falso si la clave ya existe en la tabla.
      */
     public boolean put(KeyValue kv) {
+        incrementTime(); // Contar como un paso
         if (get(kv.getKey()) == null) {
             int pos = hash(kv.getKey());
+            incrementMemory(); // Contar la operación de acceso a la memoria
             table[pos].addUltimo(kv);
-            population += 1;
-            if (checkLoad())
+            incrementMemory(); // Contar la operación de almacenamiento en memoria
+            population++;
+            if (checkLoad()) {
                 reHash(2);
+            }
             return true;
         }
         return false;
@@ -123,51 +149,50 @@ public class HashTable implements Serializable {
 
     /**
      * Elimina un objeto con la clave dada de la tabla hash.
+     * Incrementa los contadores de tiempo y memoria para medir el rendimiento.
      *
      * @param key clave del objeto a eliminar.
      * @return verdadero si la eliminación fue exitosa, falso si la clave no se encuentra en la tabla.
      */
     public boolean remove(String key) {
+        incrementTime(); // Contar como un paso
         int pos = hash(key);
+        incrementMemory(); // Contar la operación de acceso a la memoria
         int index = table[pos].remove(new KeyValue(key, null));
         if (index != -1) {
             population--;
+            incrementMemory(); // Contar la operación de eliminación en memoria
             return true;
-
         }
         return false;
-
-    }
-
-    /**
-     * Reemplaza un objeto KeyValue existente en la tabla hash con otro objeto KeyValue dado.
-     *
-     * @param kv objeto KeyValue con el que reemplazar.
-     * @return verdadero si el reemplazo fue exitoso, falso en caso contrario.
-     */
-    public boolean replace(KeyValue kv) {
-        int index = hash(kv.getKey());
-        return table[index].set(kv);
     }
 
     /**
      * Obtiene el objeto asociado a una clave dada en la tabla hash.
+     * Incrementa los contadores de tiempo y memoria para medir el rendimiento.
      *
      * @param k clave del objeto a obtener.
      * @return objeto asociado a la clave, o null si la clave no se encuentra en la tabla.
      */
     public KeyValue get(String k) {
+        incrementTime(); // Contar como un paso
         int pos = hash(k);
+        incrementMemory(); // Contar la operación de acceso a la memoria
         ListaDinamica lista = table[pos];
         KeyValue res = (KeyValue) lista.get(lista.indexOf(new KeyValue(k, null)));
+        incrementMemory(); // Contar la operación de lectura en memoria
         return res;
     }
 
     /**
-     * Rehashing de la tabla hash. Se realiza cuando el factor de carga excede el máximo permitido.
-     * Crea una nueva tabla con el doble de capacidad y reubica los elementos.
+     * Realiza el rehashing de la tabla hash cuando el factor de carga excede el máximo permitido.
+     * Incrementa los contadores de tiempo y memoria para medir el rendimiento.
+     * Crea una nueva tabla con capacidad aumentada y reubica los elementos existentes.
+     *
+     * @param factor factor por el cual se aumentará la capacidad de la tabla.
      */
     private void reHash(float factor) {
+        incrementTime(); // Contar como un paso (podría considerarse más debido a la complejidad de esta operación)
         int newCapacity = getNextPrime((int) (capacity * factor));
         HashTable hsTemp = new HashTable(newCapacity, loadFactor);
         for (int i = 0; i < capacity; i++) {
@@ -175,11 +200,28 @@ public class HashTable implements Serializable {
             int size = lista.getSize();
             for (int j = 0; j < size; j++) {
                 hsTemp.put((KeyValue) lista.removeFirst());
+                incrementMemory(); // Contar la operación de reubicación en memoria
             }
         }
         this.table = hsTemp.table;
         this.capacity = newCapacity;
+        // Considerar si se debería contar la memoria utilizada por la nueva tabla hash
     }
+
+    /**
+     * Reemplaza un objeto KeyValue existente en la tabla hash con otro objeto KeyValue dado.
+     * Incrementa los contadores de tiempo y memoria para medir el rendimiento.
+     *
+     * @param kv objeto KeyValue con el que reemplazar.
+     * @return verdadero si el reemplazo fue exitoso, falso en caso contrario.
+     */
+    public boolean replace(KeyValue kv) {
+        incrementTime(); // Contar como un paso
+        int index = hash(kv.getKey());
+        incrementMemory(); // Contar la operación de acceso a la memoria
+        return table[index].set(kv);
+    }
+
 
     /**
      * Serializa los elementos de la tabla hash y los almacena en archivos binarios.
@@ -237,6 +279,17 @@ public class HashTable implements Serializable {
                 System.out.println("Clave: " + kv.getKey() + ", Valor: " + kv.getValue());
             }
         }
+    }
+
+    /**
+     Métodos para obtener los contadores
+     */
+    public int getTime() {
+        return time;
+    }
+
+    public int getMemory() {
+        return memory;
     }
 
 }

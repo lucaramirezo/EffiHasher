@@ -104,14 +104,14 @@ public class StaticHashTable implements Serializable {
                     return true;
                 }
 
-            if (table[probingIndex].getKey().equals(key)) {
-                table[probingIndex].setValue(value);
-                return true;
-            }
+                if (table[probingIndex].getKey().equals(key)) {
+                    table[probingIndex].setValue(value);
+                    return true;
+                }
 
-            // Calcular la siguiente ranura usando el doble hash
-            probingIndex = (probingIndex + stepSize) % TABLE_SIZE;
-        }
+                // Calcular la siguiente ranura usando el doble hash
+                probingIndex = (probingIndex + stepSize) % TABLE_SIZE;
+            }
 
             return false;
         }
@@ -270,9 +270,12 @@ public class StaticHashTable implements Serializable {
     /**
      * Imprime todos los pares clave-valor almacenados en la tabla hash.
      */
+    /**
+     * Imprime todos los pares clave-valor almacenados en la tabla hash que están activos.
+     */
     public void printAll() {
-        for (int i = 0; i < TABLE_SIZE; i++) {
-            if (table[i] != null) {
+        for (int i = 0; i < size; i++) {
+            if (table[i] != null && table[i].isActive()) { // Verificar si la entrada no es nula y está activa
                 KeyValue kv = table[i];
                 System.out.println("Clave: " + kv.getKey() + ", Valor: " + kv.getValue());
             }

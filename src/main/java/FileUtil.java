@@ -12,7 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
- * @author Fernando Aparicio Galisteo
+ * @author Luca Ramirez
  * Class to save and read text and binary files
  */
 public class FileUtil {
